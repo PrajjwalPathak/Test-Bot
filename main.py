@@ -19,14 +19,26 @@ async def hello(ctx):
     await ctx.send("Hello, I am a Test Bot.")
 
 
-@bot.event
-async def on_member_join(member):
-    i = rand.randint(1, 5)
-    wishes = ["Welcome on board! ", "Welcome! ", "Nice to meet you, ", "Congratulations and welcome, ",
-              "Welcome to the team, "]
+def general_channel():
     all_channels = bot.get_all_channels()
     for channel in all_channels:
         if str(channel) == "general":
-            await channel.send(wishes[i] + str(member))
+            return channel
+
+
+@bot.event
+async def on_member_join(member):
+    i = rand.randint(0, 4)
+    wishes = ["Welcome on board! ", "Welcome! ", "Nice to meet you, ", "Congratulations and welcome, ",
+              "Welcome to the team, "]
+    channel = general_channel()
+    await channel.send(wishes[i] + str(member))
+
+
+@bot.event
+async def on_member_remove(member):
+    channel = general_channel()
+    await channel.send(str(member) + " is no longer a member of this server.")
+
 
 bot.run(TOKEN)
