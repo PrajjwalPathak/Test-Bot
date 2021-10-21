@@ -41,4 +41,22 @@ async def on_member_remove(member):
     await channel.send(str(member) + " is no longer a member of this server.")
 
 
+@bot.command()
+async def join(ctx):
+    if ctx.author.voice:
+        channel = ctx.message.author.voice.channel
+        await channel.connect()
+    else:
+        await ctx.send("You must be in a voice channel to run this command.")
+
+
+@bot.command()
+async def leave(ctx):
+    if ctx.voice_client:
+        await ctx.guild.voice_client.disconnect()
+        await ctx.send("Disconnected from the voice channel.")
+    else:
+        await ctx.send("I am not connected to a voice channel.")
+
+
 bot.run(TOKEN)
